@@ -57,6 +57,37 @@
             }
         ]
     },
+    "addons": [
+        {
+            "version": 0.99,
+            "type": "update",
+            "id": "wings-daemon-upgrade-addon",
+            "name": "Pterodactyl Wings Upgrade",
+            "description": {
+                "text": "Automaticlly upgrade Pterodactyl Wings service to newest stable version."
+            },
+            "logo": "https://raw.githubusercontent.com/dynacentri/Jelastic-Pterodactyl-Node/main/images/Pterodactyl.png",
+            "buttons": [
+                {
+                    "confirmText": "Do you want to update Wings?",
+                    "loadingText": "Updating...",
+                    "action": "update",
+                    "caption": "Update Now",
+                    "successText": "Pterodactyl Wings has been upgraded successfully."
+                }
+            ],
+            "actions": {
+                "update": {
+                    "cmd [cp]": [
+                        "bash <(curl -s https://raw.githubusercontent.com/dynacentri/Jelastic-Pterodactyl-Node/main/scripts/upgrade-wings.sh)"
+                    ]
+                }
+            },
+            "success": {
+                "text": "Pterodactyl Wings Upgrade has been successfully completed."
+            }
+        }
+    ],
     "onInstall": [
         {
             "env.security.SetFirewallEnabled [cp]": {
@@ -68,6 +99,12 @@
                 "yum -y install jq curl wget",
                 "bash <(curl -s https://raw.githubusercontent.com/dynacentri/Jelastic-Pterodactyl-Node/main/scripts/pterodactyl.sh) '${settings.pterodactyl_url}' '${settings.pterodactyl_token}' 'node${nodes.cp[0].id}-${env.domain}' '${user.email}'"
             ]
+        },
+        {
+            "installAddon": {
+                "id": "wings-daemon-upgrade-addon",
+                "nodeGroup": "cp"
+            }
         }
     ],
     "success": {

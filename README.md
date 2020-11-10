@@ -11,4 +11,4 @@ You will need a Pterodactyl Panel and the domain for it as well as an Admin API 
 
 TODO: YouTube Video.
 
-NOTE: If you have issues with game servers not starting go to Admin Dashboard > Servers > (Select The Server) > Build Configuration > (Enable OOM Killer)
+NOTE: If you have issues with game servers not starting go to the Pterodactyl Panel Admin Dashboard > Servers > (Select The Server) > Build Configuration > (Enable OOM Killer)

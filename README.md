@@ -7,6 +7,6 @@ Included is a one-click add-on to upgrade the wings service.
 
 Certbot is used to generate and renew the SSL certificates.
 
-You will need a Pterodactyl Panel and the domain for it as well as an Admin API key to access the Pterodactyl Panel API.
+You will need a Pterodactyl Panel and the domain for it as well as an Admin API key with Node Read & Write permissions.
 
 TODO: YouTube Video.

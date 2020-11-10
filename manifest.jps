@@ -1,0 +1,77 @@
+{
+    "version": 0.99,
+    "type": "install",
+    "id": "pterodactyl-node",
+    "name": "Pterodactyl Node",
+    "description": {
+        "text": "Pterodactyl — The free self-hosted game management control panel for users, networks, and game service providers."
+    },
+    "logo": "https://raw.githubusercontent.com/dynacentri/Jelastic-Pterodactyl-Node/master/images/Pterodactyl.png",
+    "startPage": "http://${settings.instance_domain}",
+    "homepage": "https://pterodactyl.io/",
+    "categories": [
+        "apps/entertainment"
+    ],
+    "targetRegions": {
+        "type": "vz7"
+    },
+    "engine": "cp",
+    "nodes": [
+        {
+            "count": 1,
+            "fixedCloudlets": 1,
+            "cloudlets": 32,
+            "nodeGroup": "cp",
+            "nodeType": "dockerengine",
+            "extip": true,
+            "displayName": "Pterodactyl Node",
+            "startService": true,
+            "volumes": [
+                "/var/lib/pterodactyl/volumes"
+            ]
+        }
+    ],
+    "ssl": false,
+    "ha": false,
+    "settings": {
+        "fields": [
+            {
+                "hideLabel": false,
+                "hidden": false,
+                "type": "string",
+                "caption": "Pterodactyl Panel/Instance Domain",
+                "default": "",
+                "name": "pterodactyl_url",
+                "editable": false,
+                "required": true
+            },
+            {
+                "hideLabel": false,
+                "hidden": false,
+                "type": "string",
+                "caption": "Pterodactyl Admin API Token",
+                "default": "",
+                "name": "pterodactyl_token",
+                "editable": false,
+                "required": true
+            }
+        ]
+    },
+    "onInstall": [
+        {
+            "env.security.SetFirewallEnabled [cp]": {
+                "enabled": false
+            },
+            "nodeType": "dockerengine",
+            "cmd [cp]": [
+                "yum -y install https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm",
+                "yum -y install jq curl wget",
+                "bash <(curl -s https://raw.githubusercontent.com/dynacentri/Jelastic-Pterodactyl-Node/master/scripts/pterodactyl.sh) '${settings.pterodactyl_url}' '${settings.pterodactyl_token}' '${env.domain}' '${user.email}'"
+            ]
+        }
+    ],
+    "success": {
+        "text": "Your Pterodactyl Node has been successfully installed and depolyed.  Visit your Pterodactyl Game Panel to finish configuration.",
+        "email": "Your Pterodactyl Node has been successfully installed and and depolyed. Visit your Pterodactyl Game Panel to finish configuration."
+    }
+}

@@ -6,8 +6,8 @@
     "description": {
         "text": "Pterodactyl — The free self-hosted game management control panel for users, networks, and game service providers."
     },
-    "logo": "https://raw.githubusercontent.com/dynacentri/Jelastic-Pterodactyl-Node/master/images/Pterodactyl.png",
-    "startPage": "http://${settings.instance_domain}",
+    "logo": "https://raw.githubusercontent.com/dynacentri/Jelastic-Pterodactyl-Node/main/images/Pterodactyl.png",
+    "startPage": "https://${settings.pterodactyl_url}",
     "homepage": "https://pterodactyl.io/",
     "categories": [
         "apps/entertainment"
@@ -20,7 +20,7 @@
         {
             "count": 1,
             "fixedCloudlets": 1,
-            "cloudlets": 32,
+            "cloudlets": 64,
             "nodeGroup": "cp",
             "nodeType": "dockerengine",
             "extip": true,
@@ -66,7 +66,7 @@
             "cmd [cp]": [
                 "yum -y install https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm",
                 "yum -y install jq curl wget",
-                "bash <(curl -s https://raw.githubusercontent.com/dynacentri/Jelastic-Pterodactyl-Node/master/scripts/pterodactyl.sh) '${settings.pterodactyl_url}' '${settings.pterodactyl_token}' '${env.domain}' '${user.email}'"
+                "bash <(curl -s https://raw.githubusercontent.com/dynacentri/Jelastic-Pterodactyl-Node/main/scripts/pterodactyl.sh) '${settings.pterodactyl_url}' '${settings.pterodactyl_token}' 'node${nodes.cp[0].id}-${env.domain}' '${user.email}'"
             ]
         }
     ],

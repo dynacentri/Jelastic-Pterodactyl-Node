@@ -19,7 +19,7 @@
     "nodes": [
         {
             "count": 1,
-            "fixedCloudlets": 1,
+            "fixedCloudlets": 2,
             "cloudlets": 64,
             "nodeGroup": "cp",
             "nodeType": "dockerengine",

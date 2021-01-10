@@ -96,7 +96,7 @@ install_wings(){
   
   info "Installing Pterodactyl Wings Service..."
   
-  curl -L -o /usr/local/bin/wings https://github.com/pterodactyl/wings/releases/download/v1.2.2/wings_linux_amd64 > /dev/null 2>&1
+  curl -L -o /usr/local/bin/wings https://github.com/pterodactyl/wings/releases/download/v1.2.3/wings_linux_amd64 > /dev/null 2>&1
   chmod u+x /usr/local/bin/wings > /dev/null 2>&1
 
   cat <<EOT > /etc/systemd/system/wings.service

@@ -42,7 +42,7 @@ get_timezone_file() {
     elif [[ -f "/etc/localtime" ]]; then
         declare -g "$1=/etc/localtime"
     else
-        fatal "Couldn't find any supported timezone file. Contact WISP support."
+        fatal "Couldn't find any supported timezone file."
     fi
 }
 

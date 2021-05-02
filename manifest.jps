@@ -95,7 +95,9 @@
             },
             "nodeType": "dockerengine",
             "cmd [cp]": [
+                "yum -y update && yum -y upgrade",
                 "yum -y install https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm",
+                "yum -y repolist && yum -y history sync",
                 "yum -y install jq curl wget socat",
                 "bash <(curl -s https://raw.githubusercontent.com/dynacentri/Jelastic-Pterodactyl-Node/main/scripts/pterodactyl.sh) '${settings.pterodactyl_url}' '${settings.pterodactyl_token}' 'node${nodes.cp[0].id}-${env.domain}' '${user.email}'"
             ]

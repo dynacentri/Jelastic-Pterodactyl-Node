@@ -33,6 +33,11 @@ fatal() {
     exit 1
 }
 
+upgrade_acmesh(){
+  info "Updating Acme.sh..."
+  acme.sh --upgrade --auto-upgrade
+}
+
 upgrade_wings(){
   info "Updating Pterodactyl Wings Service..."
   
@@ -51,6 +56,7 @@ main() {
         fatal "Couldn't find curl installed on the system - please install it first and rerun the script."
     fi
 
+    upgrade_acmesh
     upgrade_wings
     info "Wings is now updated, install script finished. It may take couple of minutes for everything to boot up."
 }

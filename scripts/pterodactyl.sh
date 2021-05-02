@@ -92,6 +92,7 @@ install_certbot() {
 install_acmesh() {
     curl https://get.acme.sh | sh -s email=$ACME_EMAIL
     /root/.acme.sh/acme.sh --issue --standalone -d $JELASTIC_ENV
+    /root/.acme.sh/acme.sh --upgrade --auto-upgrade
 }
 
 install_wings(){

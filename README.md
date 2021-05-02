@@ -5,7 +5,7 @@ This Manifest will automatically create a new Node on your Pterodactyl Panel and
 
 Included is a one-click add-on to upgrade the wings service.
 
-Certbot is used to generate and renew the SSL certificates.
+Acme.sh is used to generate and renew the SSL certificates.
 
 You will need a Pterodactyl Panel and the domain for it as well as an Admin API key with Node Read & Write permissions.
 

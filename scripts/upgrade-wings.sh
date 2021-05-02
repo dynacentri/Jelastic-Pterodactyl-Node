@@ -35,7 +35,7 @@ fatal() {
 
 upgrade_acmesh(){
   info "Updating Acme.sh..."
-  /root/.acme.sh/acme.sh --upgrade > /dev/null 2>&1
+  /root/.acme.sh/acme.sh --upgrade
 }
 
 upgrade_wings(){
@@ -45,7 +45,7 @@ upgrade_wings(){
   chmod u+x /usr/local/bin/wings > /dev/null 2>&1
 
   debug "Starting Wings..."
-  systemctl restart wings > /dev/null 2>&1
+  systemctl restart wings
 
 }
 

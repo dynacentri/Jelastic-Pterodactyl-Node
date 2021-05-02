@@ -89,6 +89,11 @@ install_certbot() {
     /usr/local/bin/certbot-auto certonly --noninteractive --standalone --agree-tos -d $JELASTIC_ENV --email $ACME_EMAIL
 }
 
+install_acmesh() {
+    curl https://get.acme.sh | sh -s email=$ACME_EMAIL
+    /root/.acme.sh/acme.sh --issue --standalone -d $JELASTIC_ENV
+}
+
 install_wings(){
 
   mkdir -p /etc/pterodactyl
@@ -168,7 +173,7 @@ main() {
     debug "Timezone file is located in $TIMEZONE_FILE."
 
     install_docker
-    install_certbot
+    install_acmesh
     install_wings
     info "Wings is now installed, install script finished. It may take couple of minutes for everything to boot up."
 }

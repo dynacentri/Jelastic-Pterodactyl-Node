@@ -70,30 +70,9 @@ install_docker() {
     fi
 }
 
-install_certbot() {
-    if [ ! -x "$(command -v certbot)" ] ; then
-        wget https://dl.eff.org/certbot-auto
-        sudo mv certbot-auto /usr/local/bin/certbot-auto
-        chmod a+x /usr/local/bin/certbot-auto
-        /usr/local/bin/certbot-auto --install-only --non-interactive --quiet
-    fi
-
-    CRON_FILE="/etc/cron.weekly/letsencrypt-renew"
-    if [ ! -d "/etc/cron.weekly" ] ; then
-        mkdir "/etc/cron.weekly"
-    fi
-    echo "#!/bin/bash" > $CRON_FILE
-    echo "/usr/local/bin/certbot-auto renew >> /var/log/le-renew.log" >> $CRON_FILE
-    chmod a+x $CRON_FILE
-
-    /usr/local/bin/certbot-auto certonly --noninteractive --standalone --agree-tos -d $JELASTIC_ENV --email $ACME_EMAIL
-}
-
 install_acmesh() {
     mkdir -p /etc/letsencrypt/live/$JELASTIC_ENV
     curl https://get.acme.sh | sh -s email=$ACME_EMAIL
-    /root/.acme.sh/acme.sh --issue --standalone --keypath /etc/letsencrypt/live/$JELASTIC_ENV/privkey.pem --fullchainpath /etc/letsencrypt/live/$JELASTIC_ENV/fullchain.pem -d $JELASTIC_ENV --reloadcmd "systemctl restart wings"
-    /root/.acme.sh/acme.sh --upgrade --auto-upgrade
 }
 
 install_wings(){
@@ -159,6 +138,9 @@ EOT
   debug "Pterodactyl Node setup..."
   debug "Starting Wings..."
   systemctl start wings > /dev/null 2>&1
+
+  /root/.acme.sh/acme.sh --issue --standalone --keypath /etc/letsencrypt/live/$JELASTIC_ENV/privkey.pem --fullchainpath /etc/letsencrypt/live/$JELASTIC_ENV/fullchain.pem -d $JELASTIC_ENV --reloadcmd "systemctl restart wings"
+  /root/.acme.sh/acme.sh --upgrade --auto-upgrade
 
 }
 

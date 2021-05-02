@@ -92,7 +92,7 @@ install_certbot() {
 install_acmesh() {
     mkdir -p /etc/letsencrypt/live/$JELASTIC_ENV
     curl https://get.acme.sh | sh -s email=$ACME_EMAIL
-    /root/.acme.sh/acme.sh --issue --standalone --keypath /etc/letsencrypt/live/$JELASTIC_ENV/privkey.pem --fullchainpath /etc/letsencrypt/live/$JELASTIC_ENV/fullchain.pem -d $JELASTIC_ENV
+    /root/.acme.sh/acme.sh --issue --standalone --keypath /etc/letsencrypt/live/$JELASTIC_ENV/privkey.pem --fullchainpath /etc/letsencrypt/live/$JELASTIC_ENV/fullchain.pem -d $JELASTIC_ENV --reloadcmd "systemctl restart wings"
     /root/.acme.sh/acme.sh --upgrade --auto-upgrade
 }
 

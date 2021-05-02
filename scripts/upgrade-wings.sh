@@ -41,7 +41,7 @@ upgrade_acmesh(){
 upgrade_wings(){
   info "Updating Pterodactyl Wings Service..."
   
-  curl -L -o /usr/local/bin/wings https://github.com/pterodactyl/wings/releases/download/latest/wings_linux_amd64 > /dev/null 2>&1
+  curl -L -o /usr/local/bin/wings https://github.com/pterodactyl/wings/releases/download/v1.4.1/wings_linux_amd64 > /dev/null 2>&1
   chmod u+x /usr/local/bin/wings > /dev/null 2>&1
 
   debug "Starting Wings..."

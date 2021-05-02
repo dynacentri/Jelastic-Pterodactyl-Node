@@ -35,7 +35,7 @@ fatal() {
 
 upgrade_acmesh(){
   info "Updating Acme.sh..."
-  /root/.acme.sh/acme.sh --upgrade
+  /root/.acme.sh/acme.sh --upgrade > /dev/null 2>&1
 }
 
 upgrade_wings(){

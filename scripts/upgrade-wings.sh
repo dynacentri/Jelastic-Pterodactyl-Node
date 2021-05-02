@@ -45,7 +45,7 @@ upgrade_wings(){
   chmod u+x /usr/local/bin/wings > /dev/null 2>&1
 
   debug "Starting Wings..."
-  systemctl restart wings
+  systemctl restart wings > /dev/null 2>&1
 
 }
 

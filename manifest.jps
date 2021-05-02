@@ -4,7 +4,7 @@
     "id": "pterodactyl-node",
     "name": "Pterodactyl Node",
     "description": {
-        "text": "Pterodactyl — The free self-hosted game management control panel for users, networks, and game service providers."
+        "text": "Pterodactyl — The free self-hosted game management control panel for users, networks, and game service providers. Uses Acme.sh for automatic SSL certficates."
     },
     "logo": "https://raw.githubusercontent.com/dynacentri/Jelastic-Pterodactyl-Node/main/images/Pterodactyl.png",
     "startPage": "https://${settings.pterodactyl_url}",

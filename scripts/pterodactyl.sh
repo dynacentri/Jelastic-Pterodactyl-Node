@@ -72,13 +72,9 @@ install_docker() {
 
 install_acmesh() {
     mkdir -p /etc/letsencrypt/live/$JELASTIC_ENV
+    
     info "Installing Acme.sh Service..."
     curl https://get.acme.sh | sh -s email=$ACME_EMAIL
-    
-    info "Issuing SSL Certificate..."
-    /root/.acme.sh/acme.sh --issue --standalone --keypath /etc/letsencrypt/live/$JELASTIC_ENV/privkey.pem --fullchainpath /etc/letsencrypt/live/$JELASTIC_ENV/fullchain.pem -d $JELASTIC_ENV --reloadcmd "systemctl restart wings"
-    info "Enabling Acme.sh Automatic Upgrade..."
-    /root/.acme.sh/acme.sh --upgrade --auto-upgrade
 }
 
 install_wings(){
@@ -142,6 +138,13 @@ remote: 'https://$PTERODACTYL_URL'
 EOT
   
   debug "Pterodactyl Node setup..."
+
+  info "Issuing SSL Certificate..."
+  /root/.acme.sh/acme.sh --issue --standalone --keypath /etc/letsencrypt/live/$JELASTIC_ENV/privkey.pem --fullchainpath /etc/letsencrypt/live/$JELASTIC_ENV/fullchain.pem -d $JELASTIC_ENV --reloadcmd "systemctl restart wings"
+    
+  info "Enabling Acme.sh Automatic Upgrade..."
+  /root/.acme.sh/acme.sh --upgrade --auto-upgrade
+  
   debug "Starting Wings..."
   systemctl start wings > /dev/null 2>&1
 

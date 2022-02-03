@@ -46,10 +46,49 @@ get_timezone_file() {
     fi
 }
 
-install_docker() {
-    # TODO: Should install curl if not present
+install_dependencies() {
 
-    debug "Checking if docker is installed..."
+    info "Checking if dependencies are installed..."
+    
+    debug "Checking if curl is installed..."
+    if [[ ! -x "$(command -v curl)" ]]; then
+        info "Missing dependency curl, running install..."
+        apt install -y curl
+        if [[ "$?" -ne 0 ]]; then
+            fatal "Failed to install curl. Stopping script."
+        fi
+    else
+        debug "dependency curl is already installed, skipping installation of it."
+    fi
+
+    debug "Checking if jq is installed..."
+    if [[ ! -x "$(command -v jq)" ]]; then
+        info "Missing dependency jq, running install..."
+        apt install -y jq
+        if [[ "$?" -ne 0 ]]; then
+            fatal "Failed to install jq. Stopping script."
+        fi
+    else
+        debug "dependency jq is already installed, skipping installation of it."
+    fi
+
+    debug "Checking if socat is installed..."
+    if [[ ! -x "$(command -v socat)" ]]; then
+        info "Missing dependency socat, running install..."
+        apt install -y socat
+        if [[ "$?" -ne 0 ]]; then
+            fatal "Failed to install socat. Stopping script."
+        fi
+    else
+        debug "dependency socat is already installed, skipping installation of it."
+    fi
+
+}
+
+install_docker() {
+
+    info "Checking if docker is installed..."
+    
     if [[ ! -x "$(command -v docker)" ]]; then
         info "Missing dependency Docker, running its install script..."
         curl -sSL https://get.docker.com/ | CHANNEL=stable bash
@@ -59,7 +98,7 @@ install_docker() {
 
     # TODO: Check kernel version (and if virtualization packages are installed)
 
-    debug "Starting and enabling docker..."
+    info "Starting and enabling docker..."
     systemctl start docker > /dev/null 2>&1
     systemctl enable docker > /dev/null 2>&1
 
@@ -68,6 +107,7 @@ install_docker() {
     if [[ "$?" -ne 0 ]]; then
         fatal "Failed verifying docker support of this machine. The command `docker run hello-world` fails, please look into this and re-run the script after it works."
     fi
+    
 }
 
 install_acmesh() {
@@ -142,8 +182,6 @@ system:
 allowed_mounts: []
 remote: 'https://$PTERODACTYL_URL'
 EOT
-  
-  debug "Pterodactyl Node setup..."
 
   info "Issuing SSL Certificate..."
   /root/.acme.sh/acme.sh --issue --standalone --keypath /etc/letsencrypt/live/$JELASTIC_ENV/privkey.pem --fullchainpath /etc/letsencrypt/live/$JELASTIC_ENV/fullchain.pem -d $JELASTIC_ENV --reloadcmd "systemctl restart wings"
@@ -151,7 +189,7 @@ EOT
   info "Enabling Acme.sh Automatic Upgrade..."
   /root/.acme.sh/acme.sh --upgrade --auto-upgrade
   
-  debug "Starting Wings..."
+  info "Starting Wings..."
   systemctl start wings > /dev/null 2>&1
 
 }
@@ -159,22 +197,11 @@ EOT
 main() {
     info "Script loaded, starting the install process..."
 
-    if [[ ! -x "$(command -v curl)" ]]; then
-        fatal "Couldn't find curl installed on the system - please install it first and rerun the script."
-    fi
-
-    if [[ ! -x "$(command -v jq)" ]]; then
-        fatal "Couldn't find jq installed on the system - please install it first and rerun the script."
-    fi
-
-    if [[ ! -x "$(command -v socat)" ]]; then
-        fatal "Couldn't find socat installed on the system - please install it first and rerun the script."
-    fi
-
     debug "Retrieving timezone file..."
     get_timezone_file "TIMEZONE_FILE"
     debug "Timezone file is located in $TIMEZONE_FILE."
 
+    install_dependencies
     install_docker
     install_acmesh
     install_wings

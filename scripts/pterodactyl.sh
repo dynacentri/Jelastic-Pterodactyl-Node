@@ -183,11 +183,17 @@ allowed_mounts: []
 remote: 'https://$PTERODACTYL_URL'
 EOT
 
+  info "Setting Default SSL CA Server..."
+  /root/.acme.sh/acme.sh --set-default-ca --server zerossl
+
   info "Issuing SSL Certificate..."
   /root/.acme.sh/acme.sh --issue --standalone --keypath /etc/letsencrypt/live/$JELASTIC_ENV/privkey.pem --fullchainpath /etc/letsencrypt/live/$JELASTIC_ENV/fullchain.pem -d $JELASTIC_ENV --reloadcmd "systemctl restart wings"
-    
+
   info "Enabling Acme.sh Automatic Upgrade..."
   /root/.acme.sh/acme.sh --upgrade --auto-upgrade
+  
+  info "Enabling Acme.sh Auto Cron..."
+  /root/.acme.sh/acme.sh --cron
   
   info "Starting Wings..."
   systemctl start wings > /dev/null 2>&1

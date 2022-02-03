@@ -106,9 +106,15 @@ EOT
 
   systemctl daemon-reload > /dev/null 2>&1
   systemctl enable wings > /dev/null 2>&1
+  
+  info "Getting System Memory Size (MB)..."
+  TOTAL_MEM=`awk '/MemTotal/{printf( "%d\n", $2 / 1024 )}' /proc/meminfo`
+  
+  debug "Getting System Disk Size... (Temp Hardcoded for 100GB)"
+  TOTAL_DISK=`102400`
 
   info "Adding new Node to Pterodactyl Panel..."
-  PTERODACTYL_NODE_ID=$(curl "https://"$PTERODACTYL_URL"/api/application/nodes" -H 'Accept: application/json' -H 'Content-Type: application/json' -H 'Authorization: Bearer '$PTERODACTYL_TOKEN'' -X POST -d '{"name": "'$JELASTIC_ENV'", "location_id": 1, "fqdn": "'$JELASTIC_ENV'", "scheme": "https", "memory": 8192, "memory_overallocate": 0, "disk": 102400, "disk_overallocate": 0, "upload_size": 100, "daemon_sftp": 2022, "daemon_listen": 8080}' | jq -r '.attributes.id')
+  PTERODACTYL_NODE_ID=$(curl "https://"$PTERODACTYL_URL"/api/application/nodes" -H 'Accept: application/json' -H 'Content-Type: application/json' -H 'Authorization: Bearer '$PTERODACTYL_TOKEN'' -X POST -d '{"name": "'$JELASTIC_ENV'", "location_id": 1, "fqdn": "'$JELASTIC_ENV'", "scheme": "https", "memory": '$TOTAL_MEM', "memory_overallocate": 0, "disk": '$TOTAL_DISK', "disk_overallocate": 0, "upload_size": 100, "daemon_sftp": 2022, "daemon_listen": 8080}' | jq -r '.attributes.id')
   info "Getting Node configuration from Pterodactyl Panel..."
   PTERODACTYL_RESPONSE=$(curl "https://"$PTERODACTYL_URL"/api/application/nodes/"$PTERODACTYL_NODE_ID"/configuration" -H 'Accept: application/json' -H 'Content-Type: application/json' -H 'Authorization: Bearer '$PTERODACTYL_TOKEN'' -X GET)
   PTERODACTYL_NODE_UUID=$(echo $PTERODACTYL_RESPONSE | jq -r '.uuid')

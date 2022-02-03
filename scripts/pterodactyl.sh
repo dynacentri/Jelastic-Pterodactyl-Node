@@ -157,6 +157,14 @@ main() {
         fatal "Couldn't find curl installed on the system - please install it first and rerun the script."
     fi
 
+    if [[ ! -x "$(command -v jq)" ]]; then
+        fatal "Couldn't find jq installed on the system - please install it first and rerun the script."
+    fi
+
+    if [[ ! -x "$(command -v socat)" ]]; then
+        fatal "Couldn't find socat installed on the system - please install it first and rerun the script."
+    fi
+
     debug "Retrieving timezone file..."
     get_timezone_file "TIMEZONE_FILE"
     debug "Timezone file is located in $TIMEZONE_FILE."

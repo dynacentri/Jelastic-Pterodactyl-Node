@@ -39,13 +39,15 @@ upgrade_acmesh(){
 }
 
 upgrade_wings(){
+  debug "Stopping Wings..."
+  systemctl stop wings > /dev/null 2>&1
+
   info "Updating Pterodactyl Wings Service..."
-  
   curl -L -o /usr/local/bin/wings https://github.com/pterodactyl/wings/releases/latest/download/wings_linux_amd64 > /dev/null 2>&1
   chmod u+x /usr/local/bin/wings > /dev/null 2>&1
 
   debug "Starting Wings..."
-  systemctl restart wings > /dev/null 2>&1
+  systemctl start wings > /dev/null 2>&1
 
 }
 
